@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Trận Sắc Màu 20-10: Hóa Học 12 (Chương 1 & 2 - 40 Câu Phân Hóa)</title>
+  <style>
+    :root {
+      --primary: #e11d48;
+      --primary-dark: #9f1239;
+      --bg: #fff1f2;
+      --card-bg: #ffffff;
+      --border: #fecdd3;
+      --text: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fdf2f8 100%);
+      color: var(--text);
+      padding: 12px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1450px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 48% 52%;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 18px rgba(225, 29, 72, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    /* Tiêu đề & Thông tin học sinh */
+    .header-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .info-input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+    .info-input:focus {
+      border-color: var(--primary);
+    }
+
+    .banner {
+      background: linear-gradient(90deg, #f43f5e, #ec4899, #8b5cf6);
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25);
+    }
+
+    /* Ma trận điểm ảnh 26 cột x 22 hàng */
+    .grid-board {
+      display: grid;
+      grid-template-columns: repeat(26, 1fr);
+      gap: 1.5px;
+      background: #fce7f3;
+      padding: 4px;
+      border-radius: 8px;
+      border: 2px solid #f43f5e;
+      aspect-ratio: 26 / 22;
+      margin-bottom: 10px;
+    }
+
+    .cell {
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      user-select: none;
+      transition: all 0.25s ease;
+      color: #64748b;
+    }
+
+    /* Chú thích màu */
+    .legend-panel {
+      background: #fff5f5;
+      border: 1px dashed #f43f5e;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .legend-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #fecdd3;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    /* Nút bấm */
+    .btn-bar {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-reset {
+      background: #e2e8f0;
+      color: #334155;
+    }
+    .btn-reset:hover { background: #cbd5e1; }
+
+    .btn-print {
+      background: linear-gradient(90deg, #e11d48, #9333ea);
+      color: white;
+    }
+    .btn-print:hover { opacity: 0.92; }
+
+    /* Cột trắc nghiệm */
+    .quiz-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #ffe4e6;
+    }
+
+    .badge-counter {
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 13px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tab-item {
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: white;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .tab-item.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .quiz-scroll {
+      max-height: 76vh;
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .q-box {
+      border: 1px solid #f1f5f9;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 10px;
+      border-left: 4px solid #cbd5e1;
+      transition: all 0.2s;
+    }
+
+    .q-box.medium { border-left-color: #3b82f6; }
+    .q-box.good { border-left-color: #f59e0b; }
+    .q-box.advanced { border-left-color: #ef4444; }
+
+    .q-box.answered {
+      background: #f0fdf4;
+      border-left-color: #22c55e !important;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .level-tag {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+    .level-tag.medium { background: #dbeafe; color: #1e40af; }
+    .level-tag.good { background: #fef3c7; color: #92400e; }
+    .level-tag.advanced { background: #fee2e2; color: #991b1b; }
+
+    .q-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .ans-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .ans-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .ans-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .ans-key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: #e2e8f0;
+      color: #1e293b;
+      font-weight: bold;
+      border-radius: 50%;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .ans-btn.correct {
+      background: #22c55e !important;
+      color: white !important;
+      border-color: #16a34a !important;
+      font-weight: bold;
+    }
+    .ans-btn.correct .ans-key {
+      background: white;
+      color: #16a34a;
+    }
+
+    .ans-btn.wrong {
+      background: #fca5a5 !important;
+      border-color: #ef4444 !important;
+      color: #7f1d1d !important;
+    }
+
+    /* Modal chúc mừng */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-box {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      text-align: center;
+      max-width: 440px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Định dạng in A4 / Xuất PDF */
+    @media print {
+      body { background: white; padding: 0; }
+      .btn-bar, .nav-tabs, .badge-counter, .modal-overlay { display: none !important; }
+      .container { display: block; }
+      .card { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; }
+      .grid-board { border: 1.5px solid #000; background: #eee; }
+      .cell { background: white !important; color: black !important; border: 0.5px solid #ccc; }
+      .quiz-scroll { max-height: none; overflow: visible; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .q-box { border: 1px solid #aaa; padding: 6px; page-break-inside: avoid; }
+      .ans-btn { background: white !important; border: 1px solid #888 !important; color: black !important; }
+    }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+      .ans-grid { grid-template-columns: 1fr; }
+      .cell { font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- CỘT MA TRẬN TRANH ẢNH -->
+  <div class="card">
+    <div class="header-info">
+      <div><input type="text" class="info-input" placeholder="Họ và tên học sinh: ......................................."></div>
+      <div><input type="text" class="info-input" placeholder="Lớp: 12A..."></div>
+    </div>
+
+    <div class="banner">💐 CHÀO MỪNG 20-10: BÓ HOA TƯƠI THẮM 💖</div>
+
+    <!-- Ma trận Pixel 26 cột x 22 hàng -->
+    <div class="grid-board" id="pixelGrid"></div>
+
+    <!-- Chú thích bảng mã màu -->
+    <div class="legend-panel">
+      <div class="legend-title">Bảng Mật Mã Màu Sắc (Mở Khóa Khi Trả Lời Đúng)</div>
+      <div class="legend-tags" id="legendTags"></div>
+    </div>
+
+    <div class="btn-bar">
+      <button class="btn btn-reset" onclick="resetGame()">🔄 Làm Lại Bài</button>
+      <button class="btn btn-print" onclick="window.print()">📄 Xuất File PDF / In Đề</button>
+    </div>
+  </div>
+
+  <!-- CỘT BÀI TẬP TRẮC NGHIỆM 40 CÂU -->
+  <div class="card">
+    <div class="quiz-top">
+      <div>
+        <h3 style="font-size: 15px; color: var(--primary-dark);">HÓA HỌC 12: CHƯƠNG 1 & CHƯƠNG 2</h3>
+        <span style="font-size: 11px; color: #64748b;">40 câu trắc nghiệm phân hóa (Trung bình - Khá - Giỏi)</span>
+      </div>
+      <div class="badge-counter" id="progressBadge">0/40 câu đúng</div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="tab-item active" onclick="setTab('all', this)">Tất Cả (40 câu)</button>
+      <button class="tab-item" onclick="setTab('c1', this)">Chương 1: Ester - Lipid (20)</button>
+      <button class="tab-item" onclick="setTab('c2', this)">Chương 2: Carbohydrate (20)</button>
+      <button class="tab-item" onclick="setTab('tb', this)">Mức Trung Bình</button>
+      <button class="tab-item" onclick="setTab('k', this)">Mức Khá</button>
+      <button class="tab-item" onclick="setTab('g', this)">Mức Giỏi</button>
+    </div>
+
+    <div class="quiz-scroll" id="quizContainer"></div>
+  </div>
+</div>
+
+<!-- Modal chúc mừng hoàn thành -->
+<div class="modal-overlay" id="finishModal">
+  <div class="modal-box">
+    <h2 style="color: #e11d48; margin-bottom: 8px;">🎉 CHÚC MỪNG EM XUẤT SẮC! 🎉</h2>
+    <p style="font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 16px;">
+      Em đã chinh phục trọn vẹn cả 40 câu hỏi Hóa học 12 và mở khóa hoàn chỉnh bức tranh <b>Bó Hoa Tươi Thắm & Dòng Chữ 20-10</b> gửi tặng Thầy Cô và Phụ Nữ Việt Nam!
+    </p>
+    <button class="btn btn-print" style="width: 100%;" onclick="closeModal()">Chiêm Ngưỡng Bức Tranh</button>
+  </div>
+</div>
+
+<script>
+  // 1. BẢNG MÃ MÀU VÀ Ý NGHĨA
+  // R: Đỏ thắm (Hoa hồng đỏ, chữ số 20-10)
+  // P: Hồng tươi (Cánh hoa bó hoa)
+  // Y: Vàng rực rỡ (Nhụy hoa cúc, ánh sáng)
+  // G: Xanh lá tươi (Cành & lá hoa)
+  // B: Xanh da trời / Xanh dương (Dải nơ buộc bó hoa, dấu gạch ngang 20-10)
+  // O: Cam ấm áp (Giấy gói bó hoa)
+  // V: Tím mộng mơ (Bông hoa tulip tím)
+  const colorPalette = {
+    'R': { name: 'Đỏ Thắm', hex: '#ef4444' },
+    'P': { name: 'Hồng Tươi', hex: '#ec4899' },
+    'Y': { name: 'Vàng Rực Rỡ', hex: '#eab308' },
+    'G': { name: 'Xanh Lá Tươi', hex: '#22c55e' },
+    'B': { name: 'Xanh Nơ & Chữ', hex: '#3b82f6' },
+    'O': { name: 'Cam Gói Hoa', hex: '#f97316' },
+    'V': { name: 'Tím Tulip', hex: '#a855f7' }
+  };
+
+  // 2. MA TRẬN 26 CỘT x 22 HÀNG: BÓ HOA TƯƠI THẮM Ở NỬA TRÊN VÀ DÒNG CHỮ 20-10 Ở DƯỚI
+  const matrixData = [
+    "Q Z W P P F M V V J K R R T C X Y Y U L P P K Z W F",
+    "J P P P P P V V V V R R R R C Y Y Y Y P P P P P J M",
+    "P P Y Y P P V Y Y V R Y Y R G Y Y Y Y P Y Y P P L Q",
+    "P P Y Y P P V V V V R R R R G G Y Y G P Y Y P P F W",
+    "J P P P P P M V V T X R R K G G G G Z P P P P P J U",
+    "Q Z W P P F M J L K X T D C B G G M L K W P P F Q M",
+    "F K M X O O O O O O O O O O O O O O O O O O K M F L",
+    "W Z O O P P G G G R R G G G V V G G P P O O M W J T",
+    "L O O G G G G G G G G G G G G G G G G G G O O Q F Z",
+    "M J O O G G G G G G G G G G G G G G G G O O K L T D",
+    "Q W F O O G G G G G G G G G G G G G G O O F M Z W L",
+    "T K M L O O B B B B B B B B B B B B O O L M K T W F",
+    "Z Q W F M B B Y Y B B B B B B Y Y B B F M L J K Z W",
+    "K L J M B B B B B B B B B B B B B B B B M J L K T Q",
+    "Q F W Z M K L J B B B B B B B B J L K M Z W F Q L M",
+    "A D C F K Q L W S Z M T H T K V N D S L A Z M Q X T",
+    "R R R R M O O O O F B B B B B Z R R M O O O O W F",
+    "W F R Q O Z W F O W U F M L F R F O K O S B W F R",
+    "R R R R K O L M O Z B B B B B W L R K O M D O H L Q",
+    "R X M F O Z Q W O Q W U F J C R C O Z Q O F M T K",
+    "R R R R W O O O O B B B B B B L R R R D O O O O S W",
+    "Z Q W F M L J K S H D C B A N U V T K L Z W E D M L"
+  ];
+
+  // 3. NGÂN HÀNG 40 CÂU HỎI HÓA HỌC 12 (CHƯƠNG 1 & CHƯƠNG 2) PHÂN HÓA 3 MỨC ĐỘ
+  const quizBank = [
+    // ==================== CHƯƠNG 1: ESTER - LIPID (20 CÂU) ====================
+    // MỨC TRUNG BÌNH (8 câu)
+    {
+      id: 1, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 1: Công thức phân tử chung của ester no, đơn chức, mạch hở là gì?",
+      options: [
+        { key: "R", text: "CnH2nO2 (n ≥ 2)", isCorrect: true },
+        { key: "A", text: "CnH2n-2O2 (n ≥ 3)", isCorrect: false },
+        { key: "B", text: "CnH2n+2O2 (n ≥ 1)", isCorrect: false },
+        { key: "C", text: "CnH2nO (n ≥ 1)", isCorrect: false }
+      ]
+    },
+    {
+      id: 2, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 2: Thủy phân methyl acetate (CH3COOCH3) trong dung dịch NaOH đun nóng sinh ra muối nào?",
+      options: [
+        { key: "A", text: "HCOONa", isCorrect: false },
+        { key: "P", text: "CH3COONa", isCorrect: true },
+        { key: "C", text: "C2H5COONa", isCorrect: false },
+        { key: "D", text: "CH3COOH", isCorrect: false }
+      ]
+    },
+    {
+      id: 3, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 3: Chất béo là triester của carboxylic acid béo với alcohol nào sau đây?",
+      options: [
+        { key: "A", text: "Ethanol", isCorrect: false },
+        { key: "B", text: "Ethylene glycol", isCorrect: false },
+        { key: "Y", text: "Glycerol (propan-1,2,3-triol)", isCorrect: true },
+        { key: "D", text: "Methanol", isCorrect: false }
+      ]
+    },
+    {
+      id: 4, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 4: Acid béo nào sau đây là acid béo không no chứa 1 liên kết đôi C=C?",
+      options: [
+        { key: "A", text: "Palmitic acid (C15H31COOH)", isCorrect: false },
+        { key: "B", text: "Stearic acid (C17H35COOH)", isCorrect: false },
+        { key: "G", text: "Oleic acid (C17H33COOH)", isCorrect: true },
+        { key: "D", text: "Acetic acid (CH3COOH)", isCorrect: false }
+      ]
+    },
+    {
+      id: 5, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 5: Tên gọi của ester CH3COOC2H5 là gì?",
+      options: [
+        { key: "B", text: "Ethyl acetate", isCorrect: true },
+        { key: "A", text: "Methyl acetate", isCorrect: false },
+        { key: "C", text: "Ethyl propionate", isCorrect: false },
+        { key: "D", text: "Methyl formate", isCorrect: false }
+      ]
+    },
+    {
+      id: 6, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 6: Ester isoamyl acetate có mùi thơm đặc trưng của quả gì?",
+      options: [
+        { key: "A", text: "Mùi hoa nhài", isCorrect: false },
+        { key: "V", text: "Mùi chuối chín", isCorrect: true },
+        { key: "C", text: "Mùi hoa hồng", isCorrect: false },
+        { key: "D", text: "Mùi dứa chín", isCorrect: false }
+      ]
+    },
+    {
+      id: 7, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 7: Tristearin có công thức cấu tạo thu gọn là gì?",
+      options: [
+        { key: "A", text: "(C15H31COO)3C3H5", isCorrect: false },
+        { key: "O", text: "(C17H35COO)3C3H5", isCorrect: true },
+        { key: "C", text: "(C17H33COO)3C3H5", isCorrect: false },
+        { key: "D", text: "(C17H31COO)3C3H5", isCorrect: false }
+      ]
+    },
+    {
+      id: 8, ch: 'c1', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 8: Ở nhiệt độ phòng, chất béo nào sau đây ở trạng thái lỏng?",
+      options: [
+        { key: "R", text: "Triolein (dầu thực vật)", isCorrect: true },
+        { key: "B", text: "Tripalmitin", isCorrect: false },
+        { key: "C", text: "Tristearin", isCorrect: false },
+        { key: "D", text: "Mỡ lợn đông", isCorrect: false }
+      ]
+    },
+
+    // MỨC KHÁ (7 câu)
+    {
+      id: 9, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 9: So sánh nhiệt độ sôi của các chất cùng có 2 nguyên tử Carbon: (1) C2H6; (2) CH3CHO; (3) C2H5OH; (4) HCOOH. Thứ tự tăng dần là:",
+      options: [
+        { key: "A", text: "(1) < (3) < (2) < (4)", isCorrect: false },
+        { key: "P", text: "(1) < (2) < (3) < (4)", isCorrect: true },
+        { key: "C", text: "(2) < (1) < (3) < (4)", isCorrect: false },
+        { key: "D", text: "(4) < (3) < (2) < (1)", isCorrect: false }
+      ]
+    },
+    {
+      id: 10, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 10: Cho phản ứng: Triolein + H2 (xúc tác Ni, t°). Sản phẩm rắn thu được là gì?",
+      options: [
+        { key: "A", text: "Tripalmitin", isCorrect: false },
+        { key: "Y", text: "Tristearin (bơ nhân tạo)", isCorrect: true },
+        { key: "C", text: "Glycerol", isCorrect: false },
+        { key: "D", text: "Stearic acid", isCorrect: false }
+      ]
+    },
+    {
+      id: 11, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 11: Có bao nhiêu đồng phân ester đơn chức ứng với công thức phân tử C3H6O2?",
+      options: [
+        { key: "G", text: "2 đồng phân (HCOOC2H5 và CH3COOCH3)", isCorrect: true },
+        { key: "B", text: "3 đồng phân", isCorrect: false },
+        { key: "C", text: "4 đồng phân", isCorrect: false },
+        { key: "D", text: "1 đồng phân", isCorrect: false }
+      ]
+    },
+    {
+      id: 12, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 12: Thủy phân hoàn toàn phenyl acetate (CH3COOC6H5) bằng lượng dư NaOH đun nóng thu được:",
+      options: [
+        { key: "A", text: "CH3COONa và C6H5OH", isCorrect: false },
+        { key: "B", text: "CH3COONa, C6H5ONa và H2O (tỉ lệ mol NaOH phản ứng là 1:2)", isCorrect: true },
+        { key: "C", text: "CH3COOH và C6H5ONa", isCorrect: false },
+        { key: "D", text: "CH3COONa và C6H6", isCorrect: false }
+      ]
+    },
+    {
+      id: 13, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 13: Trong công nghiệp sản xuất xà phòng, người ta thêm dung dịch NaCl bão hòa vào hỗn hợp sau phản ứng xà phòng hóa nhằm mục đích gì?",
+      options: [
+        { key: "A", text: "Làm tăng tốc độ phản ứng thủy phân", isCorrect: false },
+        { key: "V", text: "Tách muối của acid béo (xà phòng) nổi lên trên bề mặt", isCorrect: true },
+        { key: "C", text: "Hòa tan glycerol vào xà phòng", isCorrect: false },
+        { key: "D", text: "Khử mùi hôi của mỡ động vật", isCorrect: false }
+      ]
+    },
+    {
+      id: 14, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 14: Ưu điểm nổi bật nhất của chất giặt rửa tổng hợp so với xà phòng thông thường là gì?",
+      options: [
+        { key: "O", text: "Không bị kết tủa và vẫn giặt tốt trong môi trường nước cứng (chứa Ca2+, Mg2+)", isCorrect: true },
+        { key: "B", text: "Dễ bị phân hủy sinh học hơn nhiều", isCorrect: false },
+        { key: "C", text: "Được sản xuất hoàn toàn từ mỡ động vật", isCorrect: false },
+        { key: "D", text: "Không gây kích ứng da tay", isCorrect: false }
+      ]
+    },
+    {
+      id: 15, ch: 'c1', level: 'k', levelText: 'Khá',
+      q: "Câu 15: Đốt cháy hoàn toàn 0,1 mol một ester đơn chức, mạch hở X thu được 0,3 mol CO2 và 0,3 mol H2O. Số đồng phân cấu tạo của X là:",
+      options: [
+        { key: "R", text: "4 đồng phân (C3H6O2 gồm 2 ester)", isCorrect: false },
+        { key: "R", text: "2 đồng phân ester", isCorrect: true },
+        { key: "C", text: "3 đồng phân", isCorrect: false },
+        { key: "D", text: "5 đồng phân", isCorrect: false }
+      ]
+    },
+
+    // MỨC GIỎI (5 câu)
+    {
+      id: 16, ch: 'c1', level: 'g', levelText: 'Giỏi',
+      q: "Câu 16: Thủy phân hoàn toàn 8,9 gam tristearin bằng lượng dư dung dịch NaOH. Khối lượng glycerol thu được là bao nhiêu?",
+      options: [
+        { key: "A", text: "1,84 gam", isCorrect: false },
+        { key: "P", text: "0,92 gam", isCorrect: true },
+        { key: "C", text: "2,76 gam", isCorrect: false },
+        { key: "D", text: "0,46 gam", isCorrect: false }
+      ]
+    },
+    {
+      id: 17, ch: 'c1', level: 'g', levelText: 'Giỏi',
+      q: "Câu 17: Cho các phát biểu sau: (a) Chất béo nhẹ hơn nước và không tan trong nước; (b) Dầu mỡ ăn để lâu ngày có thể bị ôi thiu do liên kết đôi bị oxy hóa; (c) Phản ứng thủy phân ester trong môi trường acid là phản ứng thuận nghịch; (d) Vinyl acetate có thể làm mất màu nước bromine; (e) Xà phòng hóa chất béo luôn sinh ra ethylene glycol. Số phát biểu ĐÚNG là:",
+      options: [
+        { key: "A", text: "3", isCorrect: false },
+        { key: "Y", text: "4 phát biểu đúng (a, b, c, d)", isCorrect: true },
+        { key: "C", text: "5", isCorrect: false },
+        { key: "D", text: "2", isCorrect: false }
+      ]
+    },
+    {
+      id: 18, ch: 'c1', level: 'g', levelText: 'Giỏi',
+      q: "Câu 18: Xà phòng hóa hoàn toàn 17,24 gam chất béo cần vừa đủ 0,06 mol NaOH. Cô cạn dung dịch sau phản ứng thu được m gam xà phòng. Giá trị của m là:",
+      options: [
+        { key: "G", text: "17,80 gam", isCorrect: true },
+        { key: "B", text: "18,24 gam", isCorrect: false },
+        { key: "C", text: "16,68 gam", isCorrect: false },
+        { key: "D", text: "19,12 gam", isCorrect: false }
+      ]
+    },
+    {
+      id: 19, ch: 'c1', level: 'g', levelText: 'Giỏi',
+      q: "Câu 19: Cho ester X no, hai chức, mạch hở có CTPT C6H10O4 tác dụng với NaOH dư thu được một muối của dicarboxylic acid Y và một alcohol đơn chức Z. Công thức cấu tạo phù hợp của X là:",
+      options: [
+        { key: "A", text: "CH3OOC-COOCH2CH2CH3", isCorrect: false },
+        { key: "B", text: "C2H5OOC-COOC2H5 (Diethyl oxalate)", isCorrect: true },
+        { key: "C", text: "CH3OOC-CH2-CH2-COOCH3", isCorrect: false },
+        { key: "D", text: "(CH3COO)2C2H4", isCorrect: false }
+      ]
+    },
+    {
+      id: 20, ch: 'c1', level: 'g', levelText: 'Giỏi',
+      q: "Câu 20: Đun nóng 12,0 gam CH3COOH với 11,5 gam C2H5OH có H2SO4 đặc xúc tác, thu được 11,44 gam CH3COOC2H5. Hiệu suất của phản ứng este hóa là:",
+      options: [
+        { key: "A", text: "60%", isCorrect: false },
+        { key: "V", text: "65%", isCorrect: true },
+        { key: "C", text: "70%", isCorrect: false },
+        { key: "D", text: "75%", isCorrect: false }
+      ]
+    },
+
+    // ==================== CHƯƠNG 2: CARBOHYDRATE (20 CÂU) ====================
+    // MỨC TRUNG BÌNH (8 câu)
+    {
+      id: 21, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 21: Chất nào sau đây thuộc loại carbohydrate monosaccharide?",
+      options: [
+        { key: "R", text: "Glucose", isCorrect: true },
+        { key: "B", text: "Saccharose", isCorrect: false },
+        { key: "C", text: "Tinh bột", isCorrect: false },
+        { key: "D", text: "Cellulose", isCorrect: false }
+      ]
+    },
+    {
+      id: 22, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 22: Fructose có nhiều nhất trong loại thực phẩm tự nhiên nào?",
+      options: [
+        { key: "A", text: "Cây mía", isCorrect: false },
+        { key: "P", text: "Mật ong (chiếm khoảng 40%)", isCorrect: true },
+        { key: "C", text: "Củ cải đường", isCorrect: false },
+        { key: "D", text: "Nho chín", isCorrect: false }
+      ]
+    },
+    {
+      id: 23, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 23: Đường mía, đường thốt nốt hay đường cát có thành phần hóa học chính là:",
+      options: [
+        { key: "A", text: "Glucose", isCorrect: false },
+        { key: "Y", text: "Saccharose", isCorrect: true },
+        { key: "C", text: "Fructose", isCorrect: false },
+        { key: "D", text: "Maltose", isCorrect: false }
+      ]
+    },
+    {
+      id: 24, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 24: Công thức phân tử của tinh bột và cellulose được biểu diễn là:",
+      options: [
+        { key: "G", text: "(C6H10O5)n", isCorrect: true },
+        { key: "B", text: "C12H22O11", isCorrect: false },
+        { key: "C", text: "C6H12O6", isCorrect: false },
+        { key: "D", text: "(C6H12O6)n", isCorrect: false }
+      ]
+    },
+    {
+      id: 25, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 25: Thuốc thử nào sau đây dùng để nhận biết dung dịch hồ tinh bột bằng màu xanh tím đặc trưng?",
+      options: [
+        { key: "B", text: "Dung dịch Iodine (I2)", isCorrect: true },
+        { key: "A", text: "Dung dịch AgNO3/NH3", isCorrect: false },
+        { key: "C", text: "Dung dịch Cu(OH)2", isCorrect: false },
+        { key: "D", text: "Quỳ tím", isCorrect: false }
+      ]
+    },
+    {
+      id: 26, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 26: Để tráng gương hoặc ruột phích, người ta thường dùng phản ứng tráng bạc của chất nào?",
+      options: [
+        { key: "A", text: "Saccharose", isCorrect: false },
+        { key: "O", text: "Glucose", isCorrect: true },
+        { key: "C", text: "Cellulose", isCorrect: false },
+        { key: "D", text: "Tinh bột", isCorrect: false }
+      ]
+    },
+    {
+      id: 27, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 27: Trong tự nhiên, bông nõn gần như là dạng tinh khiết nhất của:",
+      options: [
+        { key: "V", text: "Cellulose (khoảng 95 - 98%)", isCorrect: true },
+        { key: "B", text: "Tinh bột", isCorrect: false },
+        { key: "C", text: "Glucose", isCorrect: false },
+        { key: "D", text: "Saccharose", isCorrect: false }
+      ]
+    },
+    {
+      id: 28, ch: 'c2', level: 'tb', levelText: 'Trung bình',
+      q: "Câu 28: Ở nhiệt độ thường, dung dịch glucose hòa tan được Cu(OH)2 tạo thành dung dịch có màu:",
+      options: [
+        { key: "R", text: "Xanh lam đặc trưng của polyalcohol", isCorrect: true },
+        { key: "B", text: "Đỏ gạch", isCorrect: false },
+        { key: "C", text: "Tím biuret", isCorrect: false },
+        { key: "D", text: "Vàng chanh", isCorrect: false }
+      ]
+    },
+
+    // MỨC KHÁ (7 câu)
+    {
+      id: 29, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 29: Saccharose được cấu tạo từ các đơn vị nào qua liên kết glycoside?",
+      options: [
+        { key: "A", text: "Hai gốc α-glucose", isCorrect: false },
+        { key: "P", text: "Một gốc α-glucose và một gốc β-fructose", isCorrect: true },
+        { key: "C", text: "Một gốc β-glucose và một gốc α-fructose", isCorrect: false },
+        { key: "D", text: "Hai gốc β-fructose", isCorrect: false }
+      ]
+    },
+    {
+      id: 30, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 30: Trong môi trường kiềm, fructose có thể chuyển hóa thuận nghịch thành:",
+      options: [
+        { key: "A", text: "Saccharose", isCorrect: false },
+        { key: "Y", text: "Glucose", isCorrect: true },
+        { key: "C", text: "Maltose", isCorrect: false },
+        { key: "D", text: "Sorbitol", isCorrect: false }
+      ]
+    },
+    {
+      id: 31, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 31: Khác biệt cấu trúc giữa amylose và amylopectin trong tinh bột là:",
+      options: [
+        { key: "G", text: "Amylose có mạch không phân nhánh, còn amylopectin có mạch phân nhánh", isCorrect: true },
+        { key: "B", text: "Amylose phân nhánh, amylopectin không phân nhánh", isCorrect: false },
+        { key: "C", text: "Amylose cấu tạo từ fructose, amylopectin từ glucose", isCorrect: false },
+        { key: "D", text: "Amylose có liên kết peptide", isCorrect: false }
+      ]
+    },
+    {
+      id: 32, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 32: Cellulose có thể hòa tan tốt trong dung dịch nào sau đây?",
+      options: [
+        { key: "B", text: "Nước Schweizer (dung dịch [Cu(NH3)4](OH)2)", isCorrect: true },
+        { key: "A", text: "Ethanol 90 độ", isCorrect: false },
+        { key: "C", text: "Dung dịch kiềm loãng", isCorrect: false },
+        { key: "D", text: "Benzene", isCorrect: false }
+      ]
+    },
+    {
+      id: 33, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 33: Phản ứng chứng minh glucose có 5 nhóm hydroxy (-OH) kề nhau là:",
+      options: [
+        { key: "A", text: "Tác dụng với dung dịch AgNO3/NH3", isCorrect: false },
+        { key: "V", text: "Tạo ester pentaacetate khi tác dụng với acetic anhydride", isCorrect: true },
+        { key: "C", text: "Khử Cu(OH)2 khi đun nóng tạo kết tủa đỏ gạch", isCorrect: false },
+        { key: "D", text: "Lên men thành ethyl alcohol", isCorrect: false }
+      ]
+    },
+    {
+      id: 34, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 34: Khi thủy phân hoàn toàn tinh bột hoặc cellulose có xúc tác acid, sản phẩm duy nhất thu được là:",
+      options: [
+        { key: "O", text: "Glucose", isCorrect: true },
+        { key: "B", text: "Fructose", isCorrect: false },
+        { key: "C", text: "Saccharose", isCorrect: false },
+        { key: "D", text: "Maltose", isCorrect: false }
+      ]
+    },
+    {
+      id: 35, ch: 'c2', level: 'k', levelText: 'Khá',
+      q: "Câu 35: Hợp chất nào dưới đây KHÔNG tham gia phản ứng tráng bạc (với thuốc thử Tollens)?",
+      options: [
+        { key: "R", text: "Saccharose", isCorrect: true },
+        { key: "B", text: "Glucose", isCorrect: false },
+        { key: "C", text: "Fructose", isCorrect: false },
+        { key: "D", text: "Formaldehyde", isCorrect: false }
+      ]
+    },
+
+    // MỨC GIỎI (5 câu)
+    {
+      id: 36, ch: 'c2', level: 'g', levelText: 'Giỏi',
+      q: "Câu 36: Cho 36,0 gam glucose lên men thành ethyl alcohol với hiệu suất 80%. Hấp thụ toàn bộ khí CO2 sinh ra vào dung dịch Ca(OH)2 dư thu được m gam kết tủa. Giá trị của m là:",
+      options: [
+        { key: "A", text: "40 gam", isCorrect: false },
+        { key: "P", text: "32 gam", isCorrect: true },
+        { key: "C", text: "20 gam", isCorrect: false },
+        { key: "D", text: "25 gam", isCorrect: false }
+      ]
+    },
+    {
+      id: 37, ch: 'c2', level: 'g', levelText: 'Giỏi',
+      q: "Câu 37: Cho các phát biểu sau: (1) Glucose và fructose là đồng phân của nhau; (2) Tinh bột và cellulose là đồng phân của nhau vì cùng có CTPT là (C6H10O5)n; (3) Thủy phân hoàn toàn saccharose thu được cả glucose và fructose; (4) Cellulose trinitrate là nguyên liệu sản xuất tơ visco; (5) Hàm lượng glucose trong máu người bình thường khoảng 0,1%. Số phát biểu ĐÚNG là:",
+      options: [
+        { key: "A", text: "2", isCorrect: false },
+        { key: "Y", text: "3 phát biểu đúng: (1), (3), (5)", isCorrect: true },
+        { key: "C", text: "4", isCorrect: false },
+        { key: "D", text: "1", isCorrect: false }
+      ]
+    },
+    {
+      id: 38, ch: 'c2', level: 'g', levelText: 'Giỏi',
+      q: "Câu 38: Đun nóng dung dịch chứa m gam glucose với dung dịch AgNO3/NH3 dư thu được 21,6 gam Ag kết tủa. Biết phản ứng tráng gương xảy ra hoàn toàn. Giá trị của m là:",
+      options: [
+        { key: "G", text: "18,0 gam", isCorrect: true },
+        { key: "B", text: "36,0 gam", isCorrect: false },
+        { key: "C", text: "9,0 gam", isCorrect: false },
+        { key: "D", text: "27,0 gam", isCorrect: false }
+      ]
+    },
+    {
+      id: 39, ch: 'c2', level: 'g', levelText: 'Giỏi',
+      q: "Câu 39: Xenlulozo trinitrat được điều chế từ cellulose và acid nitric đặc có xúc tác H2SO4 đặc: [C6H7O2(OH)3]n + 3nHNO3 -> [C6H7O2(ONO2)3]n + 3nH2O. Để sản xuất 29,7 kg xenlulozo trinitrat với hiệu suất phản ứng 90%, khối lượng cellulose cần dùng là:",
+      options: [
+        { key: "B", text: "18,0 kg", isCorrect: true },
+        { key: "A", text: "16,2 kg", isCorrect: false },
+        { key: "C", text: "20,0 kg", isCorrect: false },
+        { key: "D", text: "14,58 kg", isCorrect: false }
+      ]
+    },
+    {
+      id: 40, ch: 'c2', level: 'g', levelText: 'Giỏi',
+      q: "Câu 40: Thủy phân hoàn toàn 68,4 gam saccharose trong môi trường acid với hiệu suất 75%, sau đó trung hòa acid rồi cho toàn bộ dung dịch thu được tác dụng với dung dịch AgNO3 trong NH3 dư, đun nóng. Lượng bạc kết tủa tối đa thu được là:",
+      options: [
+        { key: "A", text: "86,4 gam", isCorrect: false },
+        { key: "V", text: "64,8 gam", isCorrect: true },
+        { key: "C", text: "43,2 gam", isCorrect: false },
+        { key: "D", text: "32,4 gam", isCorrect: false }
+      ]
+    }
+  ];
+
+  let correctCount = 0;
+  const answeredSet = new Set();
+
+  // Khởi tạo bảng ma trận
+  function renderGrid() {
+    const gridEl = document.getElementById("pixelGrid");
+    gridEl.innerHTML = "";
+    matrixData.forEach(row => {
+      const chars = row.split(" ");
+      chars.forEach(ch => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.dataset.letter = ch;
+        cell.innerText = ch;
+        gridEl.appendChild(cell);
+      });
+    });
+  }
+
+  // Khởi tạo danh sách bảng màu
+  function renderLegend() {
+    const legendEl = document.getElementById("legendTags");
+    legendEl.innerHTML = "";
+    for (const [key, item] of Object.entries(colorPalette)) {
+      const tag = document.createElement("div");
+      tag.className = "tag-item";
+      tag.innerHTML = `<span class="dot" style="background:${item.hex}"></span> <b>${key}</b>: ${item.name}`;
+      legendEl.appendChild(tag);
+    }
+  }
+
+  // Khởi tạo hiển thị câu hỏi
+  let currentFilter = 'all';
+  function renderQuiz(filter = 'all') {
+    currentFilter = filter;
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizBank.forEach(qItem => {
+      if (filter === 'c1' && qItem.ch !== 'c1') return;
+      if (filter === 'c2' && qItem.ch !== 'c2') return;
+      if (filter === 'tb' && qItem.level !== 'tb') return;
+      if (filter === 'k' && qItem.level !== 'k') return;
+      if (filter === 'g' && qItem.level !== 'g') return;
+
+      const qBox = document.createElement("div");
+      qBox.className = `q-box ${qItem.level}`;
+      if (answeredSet.has(qItem.id)) qBox.classList.add("answered");
+
+      // Header thẻ câu hỏi
+      const meta = document.createElement("div");
+      meta.className = "q-meta";
+      meta.innerHTML = `
+        <span style="color:#64748b;">${qItem.ch === 'c1' ? 'Chương 1: Ester - Lipid' : 'Chương 2: Carbohydrate'}</span>
+        <span class="level-tag ${qItem.level}">${qItem.levelText}</span>
+      `;
+      qBox.appendChild(meta);
+
+      // Tiêu đề câu hỏi
+      const title = document.createElement("div");
+      title.className = "q-title";
+      title.innerText = qItem.q;
+      qBox.appendChild(title);
+
+      // Các lựa chọn
+      const ansGrid = document.createElement("div");
+      ansGrid.className = "ans-grid";
+
+      qItem.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "ans-btn";
+        btn.innerHTML = `<span class="ans-key">${opt.key}</span> <span>${opt.text}</span>`;
+
+        if (answeredSet.has(qItem.id)) {
+          btn.disabled = true;
+          if (opt.isCorrect) btn.classList.add("correct");
+        } else {
+          btn.onclick = () => onSelectAnswer(qItem.id, opt, btn, qBox);
+        }
+
+        ansGrid.appendChild(btn);
+      });
+
+      qBox.appendChild(ansGrid);
+      container.appendChild(qBox);
+    });
+  }
+
+  // Xử lý khi học sinh bấm đáp án
+  function onSelectAnswer(qId, option, selectedBtn, qBox) {
+    const allBtns = qBox.querySelectorAll(".ans-btn");
+
+    if (option.isCorrect) {
+      selectedBtn.classList.add("correct");
+      qBox.classList.add("answered");
+      allBtns.forEach(b => b.disabled = true);
+      answeredSet.add(qId);
+      correctCount++;
+      document.getElementById("progressBadge").innerText = `${correctCount}/40 câu đúng`;
+
+      // Kích hoạt tô màu ma trận
+      fillColorOnGrid(option.key);
+
+      if (correctCount === 40) {
+        document.getElementById("finishModal").style.display = "flex";
+      }
+    } else {
+      selectedBtn.classList.add("wrong");
+      setTimeout(() => selectedBtn.classList.remove("wrong"), 750);
+    }
+  }
+
+  // Tô màu trên ma trận
+  function fillColorOnGrid(keyChar) {
+    const cells = document.querySelectorAll(`.cell[data-letter="${keyChar}"]`);
+    const cData = colorPalette[keyChar];
+    if (cData) {
+      cells.forEach(c => {
+        c.style.background = cData.hex;
+        c.style.color = "#ffffff";
+        c.style.borderColor = cData.hex;
+      });
+    }
+  }
+
+  // Chuyển tab lọc câu hỏi
+  function setTab(type, btnEl) {
+    document.querySelectorAll(".tab-item").forEach(t => t.classList.remove("active"));
+    btnEl.classList.add("active");
+    renderQuiz(type);
+  }
+
+  // Làm lại từ đầu
+  function resetGame() {
+    correctCount = 0;
+    answeredSet.clear();
+    document.getElementById("progressBadge").innerText = "0/40 câu đúng";
+    renderGrid();
+    renderQuiz(currentFilter);
+  }
+
+  function closeModal() {
+    document.getElementById("finishModal").style.display = "none";
+  }
+
+  // Chạy lần đầu
+  renderGrid();
+  renderLegend();
+  renderQuiz('all');
+</script>
+
+</body>
+</html>
